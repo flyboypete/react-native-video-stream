@@ -259,7 +259,7 @@
         _session.delegate = self;
         _session.showDebugInfo = YES;
         _session.preView = self;
-        //_session.mirror = NO;
+        _session.mirror = NO;
 
         //        UIImageView *imageView = [[UIImageView alloc] init];
         //        imageView.alpha = 0.8;
@@ -314,6 +314,7 @@
 }
 
 - (void) setLandscape: (BOOL) landscape{
+    NSLog(@"\n\n\nLandscape is %d\n\n\n", landscape);
     _landscape = landscape;
 }
 
