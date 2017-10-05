@@ -12,13 +12,17 @@
 //#import "LFLivePreview.h"
 #import "RCTStream.h"
 
-@implementation RCTStreamManager
+@implementation RCTStreamManager{
+    RCTStream *stream;
+}
 
 RCT_EXPORT_MODULE();
 
 - (UIView *) view
 {
-    return [[RCTStream alloc] initWithManager:self bridge:self.bridge];
+    stream = [[RCTStream alloc] initWithManager:self bridge:self.bridge];
+
+    return stream;
 }
 
 - (NSArray *) customDirectEventTypes
@@ -41,5 +45,7 @@ RCT_EXPORT_VIEW_PROPERTY(started, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(cameraFronted, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(url, NSString);
 RCT_EXPORT_VIEW_PROPERTY(landscape, BOOL);
+
+
 
 @end

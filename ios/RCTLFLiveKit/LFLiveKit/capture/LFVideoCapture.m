@@ -62,10 +62,15 @@
     if(!_videoCamera){
         _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:_configuration.avSessionPreset cameraPosition:AVCaptureDevicePositionFront];
         UIInterfaceOrientation statusBar = [[UIApplication sharedApplication] statusBarOrientation];
+        NSLog(@"status bar orientation = %ld", (long)statusBar);
+        NSLog(@"landscape is %d", self.configuration.landscape);
         if (self.configuration.landscape) {
+            
             if (statusBar == UIInterfaceOrientationLandscapeLeft) {
+                NSLog(@"sting camera with orientation landscape left");
                 self.videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
             } else if (statusBar == UIInterfaceOrientationLandscapeRight) {
+                NSLog(@"starting camera with orientation landscape right");
                 self.videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeRight;
             }
         } else {

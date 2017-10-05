@@ -1,15 +1,70 @@
 {
-  "name": "react-native-video-stream",
-  "version": "0.0.4",
+  "_args": [
+    [
+      {
+        "raw": "react-native-video-stream",
+        "scope": null,
+        "escapedName": "react-native-video-stream",
+        "name": "react-native-video-stream",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/adam/RNBrandlive"
+    ]
+  ],
+  "_from": "react-native-video-stream@latest",
+  "_id": "react-native-video-stream@0.0.4",
+  "_inCache": true,
+  "_location": "/react-native-video-stream",
+  "_nodeVersion": "7.9.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/react-native-video-stream-0.0.4.tgz_1492150915105_0.38336165761575103"
+  },
+  "_npmUser": {
+    "name": "kwonohbin",
+    "email": "kwonohbin1226@gmail.com"
+  },
+  "_npmVersion": "4.2.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "react-native-video-stream",
+    "scope": null,
+    "escapedName": "react-native-video-stream",
+    "name": "react-native-video-stream",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "http://registry.npmjs.org/react-native-video-stream/-/react-native-video-stream-0.0.4.tgz",
+  "_shasum": "5f6798123574f280032412700210e4e77e5a4cc0",
+  "_shrinkwrap": null,
+  "_spec": "react-native-video-stream",
+  "_where": "/Users/adam/RNBrandlive",
+  "author": {
+    "name": "TeddyKwon"
+  },
+  "bugs": {
+    "url": "https://github.com/teddykwon/react-native-video-stream/issues"
+  },
+  "dependencies": {},
   "description": "react-native-pili & LFLiveKit based video stream library",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "react": "~15.4.0",
+    "react-native": "~0.40.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/teddykwon/react-native-video-stream.git"
+  "directories": {},
+  "dist": {
+    "shasum": "5f6798123574f280032412700210e4e77e5a4cc0",
+    "tarball": "https://registry.npmjs.org/react-native-video-stream/-/react-native-video-stream-0.0.4.tgz"
   },
+  "gitHead": "e357433288eb70c35f810c946a08618ef028a91d",
+  "homepage": "https://github.com/teddykwon/react-native-video-stream#readme",
   "keywords": [
     "react",
     "react-native",
@@ -17,14 +72,23 @@
     "react-native-pili",
     "react-native-stream"
   ],
-  "author": "TeddyKwon",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/teddykwon/react-native-video-stream/issues"
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "kwonohbin",
+      "email": "kwonohbin1226@gmail.com"
+    }
+  ],
+  "name": "react-native-video-stream",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teddykwon/react-native-video-stream.git"
   },
-  "homepage": "https://github.com/teddykwon/react-native-video-stream#readme",
-  "devDependencies": {
-    "react": "~15.4.0",
-    "react-native": "~0.40.0"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.4"
 }

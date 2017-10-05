@@ -29,11 +29,30 @@ class Stream extends Component {
 		this._onStop = this._onStop.bind(this);
 	}
 
+	componentWillMount(){
+		//console.log(RCTStream);
+	}
+
+	componentWillUnmount(){
+		this.setNativeProps({started: false});
+		//this._root.stop();
+	}
+
+	_assignRoot = (component) => {
+	  this._root = component;
+	};
+
+	setNativeProps(nativeProps) {
+	  this._root.setNativeProps(nativeProps);
+	}
+
+
 	static propTypes = {
 		started: PropTypes.bool,
 		cameraFronted: PropTypes.bool,
 		url: PropTypes.string.isRequired,
 		landscape: PropTypes.bool.isRequired,
+		stop: PropTypes.func,
 
 		onReady: PropTypes.func,
 		onPending: PropTypes.func,
@@ -44,7 +63,8 @@ class Stream extends Component {
 	}
 
 	static defaultProps= {
-		cameraFronted: true
+		cameraFronted: true,
+		stopped: false
 	}
 
 	_onReady(event){
@@ -99,6 +119,7 @@ class Stream extends Component {
 
 		return (
 			<RCTStream
+				ref={this._assignRoot}
 				{...nativeProps}
 			/>
 		)

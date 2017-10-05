@@ -2,8 +2,8 @@
 //  LFVideoEncoding.h
 //  LFLiveKit
 //
-//  Created by 倾慕 on 16/5/2.
-//  Copyright © 2016年 倾慕. All rights reserved.
+//  Created by LaiFeng on 16/5/20.
+//  Copyright © 2016年 LaiFeng All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -21,11 +21,10 @@
 @protocol LFVideoEncoding <NSObject>
 @required
 - (void)encodeVideoData:(nullable CVPixelBufferRef)pixelBuffer timeStamp:(uint64_t)timeStamp;
-- (void)stopEncoder;
 @optional
 @property (nonatomic, assign) NSInteger videoBitRate;
 - (nullable instancetype)initWithVideoStreamConfiguration:(nullable LFLiveVideoConfiguration *)configuration;
 - (void)setDelegate:(nullable id<LFVideoEncodingDelegate>)delegate;
-
+- (void)stopEncoder;
 @end
 

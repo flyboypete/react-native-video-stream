@@ -30,7 +30,7 @@
     bool _started;
     bool _cameraFronted;
     NSString *_url;
-    bool _landscape;
+    int _landscape;
 }
 
 - (void)insertReactSubview:(UIView *)view atIndex:(NSInteger)atIndex
@@ -47,13 +47,14 @@
 
 - (void)removeFromSuperview
 {
+    NSLog(@"Removed camera from view");
     __weak typeof(self) _self = self;
     if(!_started){
         [_self.session stopLive];
     }
     [super removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+    _session = nil;
     //[UIApplication sharedApplication].idleTimerDisabled = _previousIdleTimerDisabled;
 }
 
@@ -165,13 +166,15 @@
     NSLog(@"Session 호출");
     if (!_session) {
         NSLog(@"Session 생성");
+        NSLog(@"starting session in landscape: %d", _landscape);
+        UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         /**      发现大家有不会用横屏的请注意啦，横屏需要在ViewController  supportedInterfaceOrientations修改方向  默认竖屏  ****/
         /**      发现大家有不会用横屏的请注意啦，横屏需要在ViewController  supportedInterfaceOrientations修改方向  默认竖屏  ****/
         /**      发现大家有不会用横屏的请注意啦，横屏需要在ViewController  supportedInterfaceOrientations修改方向  默认竖屏  ****/
         
         
         /***   默认分辨率368 ＊ 640  音频：44.1 iphone6以上48  双声道  方向竖屏 ***/
-        _session = [[LFLiveSession alloc] initWithAudioConfiguration:[LFLiveAudioConfiguration defaultConfiguration] videoConfiguration:[LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Low3 landscape:_landscape]];
+        _session = [[LFLiveSession alloc] initWithAudioConfiguration:[LFLiveAudioConfiguration defaultConfiguration] videoConfiguration:[LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_High3 outputImageOrientation:interfaceOrientation]];
         
         /**    自己定制单声道  */
         /*
@@ -284,12 +287,15 @@
 
 - (void) setStarted:(BOOL) started{
     __weak typeof(self) _self = self;
+    NSLog(@"Changing started state...");
     if(started != _started){
         if(started){
+            NSLog(@"Starting broadcast...");
             LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
             stream.url = _url;
             [_self.session startLive:stream];
         }else{
+            NSLog(@"Stopping live broadcast...");
             [_self.session stopLive];
         }
         _started = started;
@@ -316,6 +322,11 @@
 - (void) setLandscape: (BOOL) landscape{
     NSLog(@"\n\n\nLandscape is %d\n\n\n", landscape);
     _landscape = landscape;
+}
+
+- (void) stop {
+    __weak typeof(self) _self = self;
+    [_self.session stopLive];
 }
 
 @end

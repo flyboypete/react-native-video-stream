@@ -2,8 +2,8 @@
 //  LFLiveVideoConfiguration.m
 //  LFLiveKit
 //
-//  Created by 倾慕 on 16/5/1.
-//  Copyright © 2016年 倾慕. All rights reserved.
+//  Created by LaiFeng on 16/5/20.
+//  Copyright © 2016年 LaiFeng All rights reserved.
 //
 
 #import "LFLiveVideoConfiguration.h"
@@ -20,11 +20,11 @@
 }
 
 + (instancetype)defaultConfigurationForQuality:(LFLiveVideoQuality)videoQuality {
-    LFLiveVideoConfiguration *configuration = [LFLiveVideoConfiguration defaultConfigurationForQuality:videoQuality landscape:NO];
+    LFLiveVideoConfiguration *configuration = [LFLiveVideoConfiguration defaultConfigurationForQuality:videoQuality outputImageOrientation:UIInterfaceOrientationPortrait];
     return configuration;
 }
 
-+ (instancetype)defaultConfigurationForQuality:(LFLiveVideoQuality)videoQuality landscape:(BOOL)landscape {
++ (instancetype)defaultConfigurationForQuality:(LFLiveVideoQuality)videoQuality outputImageOrientation:(UIInterfaceOrientation)outputImageOrientation {
     LFLiveVideoConfiguration *configuration = [LFLiveVideoConfiguration new];
     switch (videoQuality) {
     case LFLiveVideoQuality_Low1:{
@@ -124,6 +124,7 @@
         configuration.videoMaxBitRate = 1440 * 1000;
         configuration.videoMinBitRate = 500 * 1000;
         configuration.videoSize = CGSizeMake(720, 1280);
+        configuration.autorotate = NO;
     }
         break;
     default:
@@ -131,9 +132,9 @@
     }
     configuration.sessionPreset = [configuration supportSessionPreset:configuration.sessionPreset];
     configuration.videoMaxKeyframeInterval = configuration.videoFrameRate*2;
-    configuration.landscape = landscape;
+    configuration.outputImageOrientation = outputImageOrientation;
     CGSize size = configuration.videoSize;
-    if (landscape) {
+    if(configuration.landscape) {
         configuration.videoSize = CGSizeMake(size.height, size.width);
     } else {
         configuration.videoSize = CGSizeMake(size.width, size.height);
@@ -164,6 +165,10 @@
         break;
     }
     return avSessionPreset;
+}
+
+- (BOOL)landscape{
+    return (self.outputImageOrientation == UIInterfaceOrientationLandscapeLeft || self.outputImageOrientation == UIInterfaceOrientationLandscapeRight) ? YES : NO;
 }
 
 - (CGSize)videoSize{
@@ -249,7 +254,7 @@
             break;
     }
     
-    if(self.landscape){
+    if (self.landscape){
         return CGSizeMake(videoSize.height, videoSize.width);
     }
     return videoSize;
@@ -275,7 +280,8 @@
     [aCoder encodeObject:@(self.videoMaxBitRate) forKey:@"videoMaxBitRate"];
     [aCoder encodeObject:@(self.videoMinBitRate) forKey:@"videoMinBitRate"];
     [aCoder encodeObject:@(self.sessionPreset) forKey:@"sessionPreset"];
-    [aCoder encodeObject:@(self.landscape) forKey:@"landscape"];
+    [aCoder encodeObject:@(self.outputImageOrientation) forKey:@"outputImageOrientation"];
+    [aCoder encodeObject:@(self.autorotate) forKey:@"autorotate"];
     [aCoder encodeObject:@(self.videoSizeRespectingAspectRatio) forKey:@"videoSizeRespectingAspectRatio"];
 }
 
@@ -290,7 +296,8 @@
     _videoMaxBitRate = [[aDecoder decodeObjectForKey:@"videoMaxBitRate"] unsignedIntegerValue];
     _videoMinBitRate = [[aDecoder decodeObjectForKey:@"videoMinBitRate"] unsignedIntegerValue];
     _sessionPreset = [[aDecoder decodeObjectForKey:@"sessionPreset"] unsignedIntegerValue];
-    _landscape = [[aDecoder decodeObjectForKey:@"landscape"] unsignedIntegerValue];
+    _outputImageOrientation = [[aDecoder decodeObjectForKey:@"outputImageOrientation"] unsignedIntegerValue];
+    _autorotate = [[aDecoder decodeObjectForKey:@"autorotate"] boolValue];
     _videoSizeRespectingAspectRatio = [[aDecoder decodeObjectForKey:@"videoSizeRespectingAspectRatio"] unsignedIntegerValue];
     return self;
 }
@@ -307,7 +314,8 @@
                         @(self.videoMinBitRate),
                         self.avSessionPreset,
                         @(self.sessionPreset),
-                        @(self.landscape),
+                        @(self.outputImageOrientation),
+                        @(self.autorotate),
                         @(self.videoSizeRespectingAspectRatio)];
 
     for (NSObject *value in values) {
@@ -333,7 +341,8 @@
                object.videoMinBitRate == self.videoMinBitRate &&
                [object.avSessionPreset isEqualToString:self.avSessionPreset] &&
                object.sessionPreset == self.sessionPreset &&
-               object.landscape == self.landscape &&
+               object.outputImageOrientation == self.outputImageOrientation &&
+               object.autorotate == self.autorotate &&
                object.videoSizeRespectingAspectRatio == self.videoSizeRespectingAspectRatio;
     }
 }
@@ -357,7 +366,8 @@
     [desc appendFormat:@" videoMinBitRate:%zi", self.videoMinBitRate];
     [desc appendFormat:@" avSessionPreset:%@", self.avSessionPreset];
     [desc appendFormat:@" sessionPreset:%zi", self.sessionPreset];
-    [desc appendFormat:@" landscape:%zi", self.landscape];
+    [desc appendFormat:@" outputImageOrientation:%zi", self.outputImageOrientation];
+    [desc appendFormat:@" autorotate:%zi", self.autorotate];
     return desc;
 }
 
