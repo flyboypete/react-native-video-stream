@@ -60,16 +60,18 @@
 
 - (id) initWithManager:(RCTStreamManager *)manager bridge:(RCTBridge *)bridge{
     if ((self = [super init])) {
+        NSLog(@"STARTING RCTSTREAM MANAGER");
         _started = NO;
         _cameraFronted = YES;
         self.manager = manager;
         self.bridge = bridge;
         self.backgroundColor = [UIColor clearColor];
+        self.autoresizesSubviews = YES;
         [self requestAccessForVideo];
         [self requestAccessForAudio];
         [self addSubview:self.containerView];
 //
-//        [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self setTranslatesAutoresizingMaskIntoConstraints:YES];
 //        
 //        NSLayoutConstraint *centerX = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
 //        NSLayoutConstraint *centerY = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
@@ -276,6 +278,7 @@
 
 - (UIView *)containerView {
     if (!_containerView) {
+        NSLog(@"\n\n\n\n\n\nINITIALIZING CAMERA VIEW\n\n\n\n\n\n\n\n\n\n\n");
         _containerView = [UIView new];
         _containerView.frame = self.bounds;
         _containerView.backgroundColor = [UIColor clearColor];
@@ -313,6 +316,21 @@
         }
         _cameraFronted = cameraFronted;
     }
+}
+
+- (void) setZoom: (CGFloat) zoom{
+    __weak typeof(self) _self = self;
+    [_self.session setZoomScale:zoom];
+}
+
+- (void) focusPoint: (CGPoint)point{
+    __weak typeof(self) _self = self;
+    [_self.session setFocusPoint:point];
+}
+
+- (void) setBrightness: (CGFloat) brightness{
+    __weak typeof(self) _self = self;
+    [_self.session setBrightLevel:brightness];
 }
 
 - (void) setUrl: (NSString *) url {
