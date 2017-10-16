@@ -32,6 +32,7 @@
 @synthesize beautyLevel = _beautyLevel;
 @synthesize brightLevel = _brightLevel;
 @synthesize zoomScale = _zoomScale;
+@synthesize focusPoint = _focusPoint;
 
 #pragma mark -- LifeCycle
 - (instancetype)initWithVideoConfiguration:(LFLiveVideoConfiguration *)configuration {
@@ -46,6 +47,7 @@
         self.brightLevel = 0.5;
         self.zoomScale = 1.0;
         self.mirror = YES;
+        self.focusPoint = CGPointMake(0.0, 0.0);
     }
     return self;
 }
@@ -54,6 +56,7 @@
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.videoCamera stopCameraCapture];
+    
 }
 
 #pragma mark -- Setter Getter
@@ -206,6 +209,43 @@
             _zoomScale = zoomScale;
         }
     }
+}
+
+- (void)setFocusPoint:(CGPoint)focusPoint {
+    if (self.videoCamera && self.videoCamera.inputCamera) {
+        AVCaptureDevice *device = (AVCaptureDevice *)self.videoCamera.inputCamera;
+        if ([device lockForConfiguration:nil]) {
+            if(device.isFocusPointOfInterestSupported){
+                device.focusPointOfInterest = focusPoint;
+                device.exposurePointOfInterest = focusPoint;
+                device.focusMode = AVCaptureExposureModeContinuousAutoExposure;
+                device.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+            } else {
+                NSLog(@"Focus point of interest is not supported.");
+                @try {
+                    device.focusPointOfInterest = focusPoint;
+                    device.exposurePointOfInterest = focusPoint;
+                    device.focusMode = AVCaptureExposureModeContinuousAutoExposure;
+                    device.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+                }
+                
+                @catch ( NSException *e ) {
+                    NSLog(@"couldn't set point of interest: %@", e);
+                }
+                
+                @finally {
+                    
+                }
+                
+            }
+            [device unlockForConfiguration];
+            _focusPoint = focusPoint;
+        }
+    }
+}
+
+- (CGPoint)focusPoint {
+    return _focusPoint;
 }
 
 - (CGFloat)zoomScale {
