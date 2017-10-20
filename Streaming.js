@@ -30,7 +30,11 @@ class Stream extends Component {
 	}
 
 	componentWillMount(){
-		//console.log(RCTStream);
+		
+	}
+
+	setPointOfInterest(x, y){
+		NativeModules.StreamManager.focusOnPoint(x,y);
 	}
 
 	componentWillUnmount(){
@@ -53,6 +57,9 @@ class Stream extends Component {
 		url: PropTypes.string.isRequired,
 		landscape: PropTypes.bool.isRequired,
 		stop: PropTypes.func,
+		zoom: PropTypes.number.isRequired,
+		brightness: PropTypes.number.isRequired,
+
 
 		onReady: PropTypes.func,
 		onPending: PropTypes.func,
