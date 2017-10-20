@@ -298,6 +298,12 @@
     [self didChangeValueForKey:@"zoomScale"];
 }
 
+- (void)setFocusPoint:(CGPoint)focusPoint {
+    [self willChangeValueForKey:@"focusPoint"];
+    [self.videoCaptureSource setFocusPoint:focusPoint];
+    [self didChangeValueForKey:@"focusPoint"];
+}
+
 - (CGFloat)zoomScale {
     return self.videoCaptureSource.zoomScale;
 }

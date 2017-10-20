@@ -13,6 +13,6 @@
 @interface RCTStream : UIView
 
 - (id) initWithManager: (RCTStreamManager*) manager bridge:(RCTBridge *) bridge;
-- (void) stop;
+- (void) focusPoint: (CGPoint) point;
 
 @end

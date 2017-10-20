@@ -24,6 +24,8 @@
 @property (nonatomic, strong) GPUImageAlphaBlendFilter *blendFilter;
 @property (nonatomic, strong) GPUImageUIElement *uiElementInput;
 @property (nonatomic, strong) UIView *waterMarkContentView;
+@property (nonatomic, strong) UIView *previewView;
+
 
 @end
 
@@ -32,6 +34,7 @@
 @synthesize beautyLevel = _beautyLevel;
 @synthesize brightLevel = _brightLevel;
 @synthesize zoomScale = _zoomScale;
+@synthesize focusPoint = _focusPoint;
 
 #pragma mark -- LifeCycle
 - (instancetype)initWithVideoConfiguration:(LFLiveVideoConfiguration *)configuration {
@@ -46,6 +49,7 @@
         self.brightLevel = 0.5;
         self.zoomScale = 1.0;
         self.mirror = YES;
+        self.focusPoint = CGPointMake(0.0, 0.0);
     }
     return self;
 }
@@ -54,6 +58,7 @@
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.videoCamera stopCameraCapture];
+    
 }
 
 #pragma mark -- Setter Getter
@@ -107,9 +112,13 @@
     if (self.gpuImageView.superview) [self.gpuImageView removeFromSuperview];
     [preView insertSubview:self.gpuImageView atIndex:0];
     if (self.configuration.landscape) {
-        self.gpuImageView.frame = CGRectMake(0, 0, preView.frame.size.height, preView.frame.size.width);
+        //self.gpuImageView.frame = CGRectMake(0, 0, preView.frame.size.height, preView.frame.size.width);
+        self.gpuImageView.frame = preView.frame;
+        self.gpuImageView.bounds = preView.bounds;
     }else{
-        self.gpuImageView.frame = CGRectMake(0, 0, preView.frame.size.width, preView.frame.size.height);
+        //self.gpuImageView.frame = CGRectMake(0, 0, preView.frame.size.width, preView.frame.size.height);
+        self.gpuImageView.frame = preView.frame;
+        self.gpuImageView.bounds = preView.bounds;
     }
     
 }
@@ -208,6 +217,43 @@
     }
 }
 
+- (void)setFocusPoint:(CGPoint)focusPoint {
+    if (self.videoCamera && self.videoCamera.inputCamera) {
+        AVCaptureDevice *device = (AVCaptureDevice *)self.videoCamera.inputCamera;
+        if ([device lockForConfiguration:nil]) {
+            if(device.isFocusPointOfInterestSupported){
+                device.focusPointOfInterest = focusPoint;
+                device.exposurePointOfInterest = focusPoint;
+                device.focusMode = AVCaptureExposureModeContinuousAutoExposure;
+                device.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+            } else {
+                NSLog(@"Focus point of interest is not supported.");
+                @try {
+                    device.focusPointOfInterest = focusPoint;
+                    device.exposurePointOfInterest = focusPoint;
+                    device.focusMode = AVCaptureExposureModeContinuousAutoExposure;
+                    device.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+                }
+                
+                @catch ( NSException *e ) {
+                    NSLog(@"couldn't set point of interest: %@", e);
+                }
+                
+                @finally {
+                    
+                }
+                
+            }
+            [device unlockForConfiguration];
+            _focusPoint = focusPoint;
+        }
+    }
+}
+
+- (CGPoint)focusPoint {
+    return _focusPoint;
+}
+
 - (CGFloat)zoomScale {
     return _zoomScale;
 }
@@ -250,6 +296,7 @@
 
 - (GPUImageView *)gpuImageView{
     if(!_gpuImageView){
+        //this is going to be the line to change to set the bounds to be correct
         _gpuImageView = [[GPUImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         [_gpuImageView setFillMode:kGPUImageFillModePreserveAspectRatioAndFill];
         [_gpuImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
