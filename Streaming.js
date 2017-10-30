@@ -1,8 +1,9 @@
 /**
  * Created by buhe on 16/4/29.
  */
-import React, {PropTypes, Component} from 'react';
+import React, {Component} from 'react';
 import {requireNativeComponent, Dimensions, NativeModules, View} from 'react-native';
+import { PropTypes } from 'prop-types';
 //
 // class Stream extends Component {
 // 	static propTypes = {
@@ -30,7 +31,7 @@ class Stream extends Component {
 	}
 
 	componentWillMount(){
-		
+
 	}
 
 	setPointOfInterest(x, y){

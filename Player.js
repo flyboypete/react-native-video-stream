@@ -1,11 +1,13 @@
 /**
  * Created by buhe on 16/5/4.
  */
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     requireNativeComponent,
     View
 } from 'react-native';
+
+import { PropTypes } from 'prop-types';
 
 class Player extends Component {
 
