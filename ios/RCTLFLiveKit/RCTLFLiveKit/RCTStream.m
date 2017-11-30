@@ -144,19 +144,19 @@
     NSLog(@"liveStateDidChange: %ld", state);
     switch (state) {
         case LFLiveReady:
-            self.onReady((@{});
+            self.onReady(@{});
             break;
         case LFLivePending:
-            self.onPending((@{});
+            self.onPending(@{});
             break;
         case LFLiveStart:
-            self.onStart((@{});
+            self.onStart(@{});
             break;
         case LFLiveError:
-            self.onFail((@{});
+            self.onFail(@{});
             break;
         case LFLiveStop:
-            self.onStop((@{});
+            self.onStop(@{});
             break;
         default:
             break;
