@@ -32,7 +32,6 @@ class Player extends Component {
     this.props.onShutdown && this.props.onShutdown(event.nativeEvent);
   }
 
-
   _onError(event) {
     this.props.onError && this.props.onError(event.nativeEvent);
   }

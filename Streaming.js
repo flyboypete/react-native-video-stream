@@ -26,7 +26,7 @@ class Stream extends Component {
 		this._onReady = this._onReady.bind(this);
 		this._onPending = this._onPending.bind(this);
 		this._onStart = this._onStart.bind(this);
-		this._onError = this._onError.bind(this);
+		this._onFail = this._onFail.bind(this);
 		this._onStop = this._onStop.bind(this);
 	}
 
@@ -65,7 +65,7 @@ class Stream extends Component {
 		onReady: PropTypes.func,
 		onPending: PropTypes.func,
 		onStart: PropTypes.func,
-		onError: PropTypes.func,
+		onFail: PropTypes.func,
 		onStop: PropTypes.func,
 		...View.propTypes,
 	}
@@ -87,8 +87,8 @@ class Stream extends Component {
 		this.props.onStart && this.props.onStart(event.nativeEvent);
 	}
 
-	_onError(event) {
-		this.props.onError && this.props.onError(event.nativeEvent);
+	_onFail(event) {
+		this.props.onFail && this.props.onFail(event.nativeEvent);
 	}
 
 	_onStop(event) {
@@ -117,7 +117,7 @@ class Stream extends Component {
 			onReady: this._onReady,
 			onPending: this._onPending,
 			onStart: this._onStart,
-			onError: this._onError,
+			onFail: this._onFail,
 			onStop: this._onStop,
 			...this.props,
 			style: {
