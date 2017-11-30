@@ -38,7 +38,7 @@ RCT_EXPORT_METHOD(focusOnPoint:(float)x y:(float)y){
              @"onReady",
              @"onPending",
              @"onStart",
-             @"onError",
+             @"onFail",
              @"onStop"
             ];
 }
@@ -54,7 +54,10 @@ RCT_EXPORT_VIEW_PROPERTY(url, NSString);
 RCT_EXPORT_VIEW_PROPERTY(landscape, BOOL);
 RCT_EXPORT_VIEW_PROPERTY(zoom, CGFloat);
 RCT_EXPORT_VIEW_PROPERTY(brightness, CGFloat);
-
-
+RCT_EXPORT_VIEW_PROPERTY(onStart, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onStop, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onFail, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPending, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onReady, RCTBubblingEventBlock)
 
 @end

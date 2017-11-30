@@ -12,6 +12,12 @@
 
 @interface RCTStream : UIView
 
+@property (nonatomic, copy) RCTBubblingEventBlock onReady;
+@property (nonatomic, copy) RCTBubblingEventBlock onStart;
+@property (nonatomic, copy) RCTBubblingEventBlock onFail;
+@property (nonatomic, copy) RCTBubblingEventBlock onStop;
+@property (nonatomic, copy) RCTBubblingEventBlock onPending;
+
 - (id) initWithManager: (RCTStreamManager*) manager bridge:(RCTBridge *) bridge;
 - (void) focusPoint: (CGPoint) point;
 
