@@ -119,19 +119,19 @@ static NSString *status[] = {
     //TODO - send event
     switch (state) {
         case PLPlayerStatusCaching:
-            [_eventDispatcher sendInputEventWithName:@"onLoading" body:@{@"target": self.reactTag}];
+            //[_eventDispatcher sendInputEventWithName:@"onLoading" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusPlaying:
-            [_eventDispatcher sendInputEventWithName:@"onPlaying" body:@{@"target": self.reactTag}];
+            //[_eventDispatcher sendInputEventWithName:@"onPlaying" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusPaused:
-            [_eventDispatcher sendInputEventWithName:@"onPaused" body:@{@"target": self.reactTag}];
+            //[_eventDispatcher sendInputEventWithName:@"onPaused" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusStopped:
-            [_eventDispatcher sendInputEventWithName:@"onShutdown" body:@{@"target": self.reactTag}];
+            //[_eventDispatcher sendInputEventWithName:@"onShutdown" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusError:
-            [_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
+            //[_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
             break;
         default:
             break;
@@ -146,7 +146,7 @@ static NSString *status[] = {
 - (void)tryReconnect:(nullable NSError *)error {
     if (self.reconnectCount < 3) {
         _reconnectCount ++;
-        [_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
+        //[_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * pow(2, self.reconnectCount) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [_plplayer play];
         });
