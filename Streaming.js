@@ -58,8 +58,8 @@ class Stream extends Component {
 		url: PropTypes.string.isRequired,
 		landscape: PropTypes.bool.isRequired,
 		stop: PropTypes.func,
-		zoom: PropTypes.number.isRequired,
-		brightness: PropTypes.number.isRequired,
+		zoom: PropTypes.number,
+		brightness: PropTypes.number,
 
 
 		onReady: PropTypes.func,
