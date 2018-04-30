@@ -101,7 +101,7 @@
         configuration.videoBitRate = 1000 * 1000;
         configuration.videoMaxBitRate = 1200 * 1000;
         configuration.videoMinBitRate = 500 * 1000;
-        configuration.videoSize = CGSizeMake(720, 1280);
+        configuration.videoSize = CGSizeMake(960, 1280);
     }
         break;
     case LFLiveVideoQuality_High2:{
@@ -112,7 +112,7 @@
         configuration.videoBitRate = 1200 * 1000;
         configuration.videoMaxBitRate = 1440 * 1000;
         configuration.videoMinBitRate = 800 * 1000;
-        configuration.videoSize = CGSizeMake(720, 1280);
+        configuration.videoSize = CGSizeMake(960, 1280);
     }
         break;
     case LFLiveVideoQuality_High3:{
@@ -123,7 +123,7 @@
         configuration.videoBitRate = 1200 * 1000;
         configuration.videoMaxBitRate = 1440 * 1000;
         configuration.videoMinBitRate = 500 * 1000;
-        configuration.videoSize = CGSizeMake(720, 1280);
+        configuration.videoSize = CGSizeMake(960, 1280);
         configuration.autorotate = NO;
     }
         break;
