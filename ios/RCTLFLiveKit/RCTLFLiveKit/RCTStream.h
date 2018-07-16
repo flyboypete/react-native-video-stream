@@ -18,8 +18,10 @@
 @property (nonatomic, copy) RCTBubblingEventBlock onFail;
 @property (nonatomic, copy) RCTBubblingEventBlock onStop;
 @property (nonatomic, copy) RCTBubblingEventBlock onPending;
+@property (nonatomic, copy) RCTBubblingEventBlock onBitRateChange;
 
 - (id) initWithManager: (RCTStreamManager*) manager bridge:(RCTBridge *) bridge;
 - (void) focusPoint: (CGPoint) point;
+- (void) captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock;
 
 @end

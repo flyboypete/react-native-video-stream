@@ -11,8 +11,8 @@
 
 static const NSUInteger defaultSortBufferMaxCount = 5;///< 排序10个内
 static const NSUInteger defaultUpdateInterval = 1;///< 更新频率为1s
-static const NSUInteger defaultCallBackInterval = 5;///< 5s计时一次
-static const NSUInteger defaultSendBufferMaxCount = 600;///< 最大缓冲区为600
+static const NSUInteger defaultCallBackInterval = 3;///< 5s计时一次
+static const NSUInteger defaultSendBufferMaxCount = 90;///< 最大缓冲区为600
 
 @interface LFStreamingBuffer (){
     dispatch_semaphore_t _lock;
@@ -202,7 +202,7 @@ NSInteger frameDataCompare(id obj1, id obj2, void *context){
     dispatch_semaphore_wait(_lock, DISPATCH_TIME_FOREVER);
     [self.thresholdList addObject:@(self.list.count)];
     dispatch_semaphore_signal(_lock);
-    
+
     if (self.currentInterval >= self.callBackInterval) {
         LFLiveBuffferState state = [self currentBufferState];
         if (state == LFLiveBuffferIncrease) {

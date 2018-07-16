@@ -70,6 +70,7 @@
 /* The saveLocalVideoPath is save the local video  path */
 @property (nonatomic, strong, nullable) NSURL *saveLocalVideoPath;
 
+
 #pragma mark - Initializer
 ///=============================================================================
 /// @name Initializer
@@ -82,5 +83,7 @@
    capture unstable.
  */
 - (nullable instancetype)initWithVideoConfiguration:(nullable LFLiveVideoConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+
+- (void)captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock;
 
 @end

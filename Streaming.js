@@ -28,6 +28,7 @@ class Stream extends Component {
 		this._onStart = this._onStart.bind(this);
 		this._onFail = this._onFail.bind(this);
 		this._onStop = this._onStop.bind(this);
+		this._onBitRateChange = this._onBitRateChange.bind(this);
 	}
 
 	componentWillMount(){
@@ -36,6 +37,10 @@ class Stream extends Component {
 
 	setPointOfInterest(x, y){
 		NativeModules.StreamManager.focusOnPoint(x,y);
+	}
+
+	async captureImage() {
+		return await NativeModules.StreamManager.captureImage();
 	}
 
 	componentWillUnmount(){
@@ -67,6 +72,7 @@ class Stream extends Component {
 		onStart: PropTypes.func,
 		onFail: PropTypes.func,
 		onStop: PropTypes.func,
+		onBitRateChange: PropTypes.func,
 		...View.propTypes,
 	}
 
@@ -95,6 +101,14 @@ class Stream extends Component {
 		this.props.onStop && this.props.onStop(event.nativeEvent);
 	}
 
+	_onBitRateChange(event) {
+		if (!this.props.onBitRateChange) {
+			return;
+		}
+		console.log('running onbitratechange');
+		this.props.onBitRateChange(event.nativeEvent);
+	}
+
 	render() {
 		let style = this.props.style;
 		if(this.props.style){
@@ -114,12 +128,13 @@ class Stream extends Component {
 			}
 		}
 		const nativeProps = {
+			...this.props,
 			onReady: this._onReady,
 			onPending: this._onPending,
 			onStart: this._onStart,
 			onFail: this._onFail,
 			onStop: this._onStop,
-			...this.props,
+			onBitRateChange: this._onBitRateChange,
 			style: {
 				...style
 			}

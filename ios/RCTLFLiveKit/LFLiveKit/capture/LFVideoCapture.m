@@ -26,6 +26,8 @@
 @property (nonatomic, strong) UIView *waterMarkContentView;
 @property (nonatomic, strong) UIView *previewView;
 
+@property (retain) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, retain) UIImage *stillImage;
 
 @end
 
@@ -90,6 +92,7 @@
         _videoCamera.horizontallyMirrorFrontFacingCamera = YES;
         _videoCamera.horizontallyMirrorRearFacingCamera = NO;
         _videoCamera.frameRate = (int32_t)_configuration.videoFrameRate;
+        [self addStillImageOutput:_videoCamera];
     }
     return _videoCamera;
 }
@@ -401,6 +404,94 @@
             self.videoCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
         }
     }
+}
+
+- (void)addStillImageOutput:(GPUImageVideoCamera *)videoCamera
+{
+    [self setStillImageOutput:[[AVCaptureStillImageOutput alloc] init]];
+    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];
+    [[self stillImageOutput] setOutputSettings:outputSettings];
+    
+    AVCaptureConnection *videoConnection = nil;
+    for (AVCaptureConnection *connection in [[self stillImageOutput] connections]) {
+        for (AVCaptureInputPort *port in [connection inputPorts]) {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
+                videoConnection = connection;
+                break;
+            }
+        }
+        if (videoConnection) {
+            break;
+        }
+    }
+    
+    [videoCamera.captureSession addOutput:[self stillImageOutput]];
+}
+
+- (void)captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock
+{
+    AVCaptureConnection *videoConnection = nil;
+    for (AVCaptureConnection *connection in [[self stillImageOutput] connections]) {
+        for (AVCaptureInputPort *port in [connection inputPorts]) {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo]) {
+                videoConnection = connection;
+                break;
+            }
+        }
+        if (videoConnection) {
+            break;
+        }
+    }
+    
+    NSLog(@"about to request a capture from: %@", [self stillImageOutput]);
+    [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:videoConnection
+     completionHandler:^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
+         CFDictionaryRef exifAttachments = CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+         if (exifAttachments) {
+             NSLog(@"attachements: %@", exifAttachments);
+         } else {
+             NSLog(@"no attachments");
+         }
+         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
+         UIImage *image = [[UIImage alloc] initWithData:imageData];
+         
+         if(image != nil)
+         {
+             NSString *filePath = [self persistFile:imageData];
+             NSString *base64 = [imageData base64EncodedStringWithOptions:0];
+             completionBlock(filePath, base64, nil);
+             //UIImageWriteToSavedPhotosAlbum(image, self, nil, nil);
+         }
+     }];
+}
+
+- (NSString*) persistFile:(NSData*)data {
+    // create temp file
+    NSString *tmpDirFullPath = [self getTmpDirectory];
+    NSString *filePath = [tmpDirFullPath stringByAppendingString:[[NSUUID UUID] UUIDString]];
+    filePath = [filePath stringByAppendingString:@".jpg"];
+    
+    // save cropped file
+    BOOL status = [data writeToFile:filePath atomically:YES];
+    if (!status) {
+        return nil;
+    }
+    
+    return filePath;
+}
+
+- (NSString*) getTmpDirectory {
+    NSString *TMP_DIRECTORY = @"react-native-image-crop-picker/";
+    NSString *tmpFullPath = [NSTemporaryDirectory() stringByAppendingString:TMP_DIRECTORY];
+    
+    BOOL isDir;
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:tmpFullPath isDirectory:&isDir];
+    if (!exists) {
+        [[NSFileManager defaultManager] createDirectoryAtPath: tmpFullPath
+                                  withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    
+    return tmpFullPath;
 }
 
 @end

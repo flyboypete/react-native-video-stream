@@ -119,11 +119,12 @@
         configuration.sessionPreset = LFCaptureSessionPreset720x1280;
         configuration.videoFrameRate = 30;
         configuration.videoMaxFrameRate = 30;
-        configuration.videoMinFrameRate = 15;
-        configuration.videoBitRate = 1200 * 1000;
-        configuration.videoMaxBitRate = 1440 * 1000;
-        configuration.videoMinBitRate = 500 * 1000;
+        configuration.videoMinFrameRate = 10;
+        configuration.videoBitRate = 1000 * 1000;
+        configuration.videoMaxBitRate = 3000 * 1000;
+        configuration.videoMinBitRate = 150 * 1000;
         configuration.videoSize = CGSizeMake(960, 1280);
+        //configuration.videoSize = CGSizeMake(1440, 1920);
         configuration.autorotate = NO;
     }
         break;

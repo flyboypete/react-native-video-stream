@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger,LFLiveCaptureTypeMask) {
 - (void)liveSession:(nullable LFLiveSession *)session debugInfo:(nullable LFLiveDebug *)debugInfo;
 /** callback socket errorcode */
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode;
+- (void)liveSession:(nullable LFLiveSession *)session bitRateDidChange:(NSString*)bitRate;
 @end
 
 @class LFLiveStreamInfo;
@@ -165,6 +166,8 @@ typedef NS_ENUM(NSInteger,LFLiveCaptureTypeMask) {
 - (void)setZoomScale:(CGFloat)zoomScale;
 
 - (void)setFocusPoint:(CGPoint)focusPoint;
+
+- (void)captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock;
 
 @end
 

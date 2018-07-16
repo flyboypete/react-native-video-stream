@@ -83,7 +83,7 @@
     if (self = [super init]) {
         _audioConfiguration = audioConfiguration;
         _videoConfiguration = videoConfiguration;
-        _adaptiveBitrate = NO;
+        _adaptiveBitrate = YES;
         _captureType = captureType;
     }
     return self;
@@ -107,6 +107,10 @@
     self.uploading = NO;
     [self.socket stop];
     self.socket = nil;
+}
+
+- (void)captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock {
+    [self.videoCaptureSource captureImageWithCompletionHandler:completionBlock];
 }
 
 - (void)pushVideo:(nullable CVPixelBufferRef)pixelBuffer{
@@ -197,18 +201,21 @@
 }
 
 - (void)socketBufferStatus:(nullable id<LFStreamSocket>)socket status:(LFLiveBuffferState)status {
+    NSLog(@"Checking buffer status");
     if((self.captureType & LFLiveCaptureMaskVideo || self.captureType & LFLiveInputMaskVideo) && self.adaptiveBitrate){
         NSUInteger videoBitRate = [self.videoEncoder videoBitRate];
         if (status == LFLiveBuffferDecline) {
             if (videoBitRate < _videoConfiguration.videoMaxBitRate) {
-                videoBitRate = videoBitRate + 50 * 1000;
+                videoBitRate = videoBitRate + 200 * 1000;
                 [self.videoEncoder setVideoBitRate:videoBitRate];
+                [self.delegate liveSession:self bitRateDidChange:[[NSNumber numberWithUnsignedInteger:videoBitRate] stringValue]];
                 NSLog(@"Increase bitrate %@", @(videoBitRate));
             }
         } else {
             if (videoBitRate > self.videoConfiguration.videoMinBitRate) {
-                videoBitRate = videoBitRate - 100 * 1000;
+                videoBitRate = videoBitRate - 200 * 1000;
                 [self.videoEncoder setVideoBitRate:videoBitRate];
+                [self.delegate liveSession:self bitRateDidChange:[[NSNumber numberWithUnsignedInteger:videoBitRate] stringValue]];
                 NSLog(@"Decline bitrate %@", @(videoBitRate));
             }
         }

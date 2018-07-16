@@ -32,6 +32,16 @@ RCT_EXPORT_METHOD(focusOnPoint:(float)x y:(float)y){
     [stream focusPoint:point];
 }
 
+RCT_EXPORT_METHOD(captureImage:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [stream captureImageWithCompletionHandler:^(NSString *filePath, NSString *base64, NSError *err) {
+        resolve(@{
+                  @"path": filePath,
+                  @"data": base64
+                  });
+    }];
+}
+
 - (NSArray *) customDirectEventTypes
 {
     return @[
@@ -39,7 +49,8 @@ RCT_EXPORT_METHOD(focusOnPoint:(float)x y:(float)y){
              @"onPending",
              @"onStart",
              @"onFail",
-             @"onStop"
+             @"onStop",
+             @"onBitRateChange"
             ];
 }
 
@@ -59,5 +70,6 @@ RCT_EXPORT_VIEW_PROPERTY(onStop, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onFail, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onPending, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onReady, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onBitRateChange, RCTBubblingEventBlock)
 
 @end
