@@ -163,6 +163,10 @@
     }
 }
 
+- (void)liveSession:(nullable LFLiveSession *)session bitRateDidChange:(NSString *)bitRate {
+    self.onBitRateChange(@{@"bitrate": bitRate});
+}
+
 #pragma mark -- Getter Setter
 - (LFLiveSession *)session {
     NSLog(@"Session 호출");
