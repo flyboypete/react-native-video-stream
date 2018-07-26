@@ -123,7 +123,7 @@
         configuration.videoBitRate = 1000 * 1000;
         configuration.videoMaxBitRate = 3000 * 1000;
         configuration.videoMinBitRate = 150 * 1000;
-        configuration.videoSize = CGSizeMake(960, 1280);
+        configuration.videoSize = CGSizeMake(720, 1280);
         //configuration.videoSize = CGSizeMake(1440, 1920);
         configuration.autorotate = NO;
     }

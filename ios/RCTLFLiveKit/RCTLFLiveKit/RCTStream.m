@@ -265,6 +265,7 @@
         _session.showDebugInfo = YES;
         _session.preView = self;
         _session.mirror = NO;
+        _session.beautyFace = NO;
 
         //        UIImageView *imageView = [[UIImageView alloc] init];
         //        imageView.alpha = 0.8;
@@ -345,6 +346,10 @@
 - (void) stop {
     __weak typeof(self) _self = self;
     [_self.session stopLive];
+}
+
+- (void)captureImageWithCompletionHandler:(void (^)(NSString *filePath, NSString *base64, NSError * err))completionBlock {
+    [self.session captureImageWithCompletionHandler:completionBlock];
 }
 
 @end
