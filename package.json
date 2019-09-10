@@ -34,9 +34,11 @@
       "/Users/adam/RNBrandlive"
     ]
   ],
-  "_from": "git+https://github.com/brandlive1941/react-native-video-stream.git",
+  "_from": "git+https://github.com/flyboypete/react-native-video-stream.git",
   "_id": "react-native-video-stream@0.0.4",
+  "_inBundle": false,
   "_inCache": true,
+  "_integrity": "",
   "_location": "/react-native-video-stream",
   "_nodeVersion": "7.9.0",
   "_npmOperationalInternal": {
@@ -50,39 +52,32 @@
   "_npmVersion": "4.2.0",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "git+https://github.com/brandlive1941/react-native-video-stream.git",
-    "scope": null,
-    "escapedName": null,
-    "name": null,
-    "rawSpec": "git+https://github.com/brandlive1941/react-native-video-stream.git",
-    "spec": "git+https://github.com/brandlive1941/react-native-video-stream.git",
-    "type": "hosted",
-    "hosted": {
-      "type": "github",
-      "ssh": "git@github.com:brandlive1941/react-native-video-stream.git",
-      "sshUrl": "git+ssh://git@github.com/brandlive1941/react-native-video-stream.git",
-      "httpsUrl": "git+https://github.com/brandlive1941/react-native-video-stream.git",
-      "gitUrl": "git://github.com/brandlive1941/react-native-video-stream.git",
-      "shortcut": "github:brandlive1941/react-native-video-stream",
-      "directUrl": "https://raw.githubusercontent.com/brandlive1941/react-native-video-stream/master/package.json"
-    }
+    "type": "git",
+    "raw": "react-native-video-stream@git+https://github.com/flyboypete/react-native-video-stream.git",
+    "name": "react-native-video-stream",
+    "escapedName": "react-native-video-stream",
+    "rawSpec": "git+https://github.com/flyboypete/react-native-video-stream.git",
+    "saveSpec": "git+https://github.com/flyboypete/react-native-video-stream.git",
+    "fetchSpec": "https://github.com/flyboypete/react-native-video-stream.git",
+    "gitCommittish": null
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
-  "_resolved": "git+https://github.com/brandlive1941/react-native-video-stream.git#229a8993bfe291c4921af44c2367a74972e1bba8",
+  "_resolved": "git+https://github.com/flyboypete/react-native-video-stream.git#6ba0ee6880d9729e6fda5efa54084cb70c001e65",
   "_shasum": "2a0dc2b2de4c50aa930b29c4f263f6a70f3af008",
   "_shrinkwrap": null,
-  "_spec": "git+https://github.com/brandlive1941/react-native-video-stream.git",
-  "_where": "/Users/adam/RNBrandlive",
+  "_spec": "react-native-video-stream@git+https://github.com/flyboypete/react-native-video-stream.git",
+  "_where": "/Users/popheim/Documents/Projects/sellerlivereactnative",
   "author": {
     "name": "TeddyKwon"
   },
   "bugs": {
     "url": "https://github.com/teddykwon/react-native-video-stream/issues"
   },
+  "bundleDependencies": false,
   "dependencies": {},
+  "deprecated": false,
   "description": "react-native-pili & LFLiveKit based video stream library",
   "devDependencies": {
     "react": "~15.4.0",
@@ -112,7 +107,6 @@
   ],
   "name": "react-native-video-stream",
   "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/teddykwon/react-native-video-stream.git"

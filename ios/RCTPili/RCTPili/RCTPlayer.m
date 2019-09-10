@@ -7,12 +7,19 @@
 //
 
 #import "RCTPlayer.h"
-#import <React/RCTBridgeModule.h>
+#import <React/RCTBridge.h>
 #import <React/RCTEventDispatcher.h>
 #import <React/UIView+React.h>
+#import "PLPlayer.h"
+
+@interface RCTPlayer () <PLPlayerDelegate>
+
+@property (nonatomic, weak) RCTPlayerManager *manager;
+@property (nonatomic, weak) RCTBridge *bridge;
+
+@end
 
 @implementation RCTPlayer{
-    RCTEventDispatcher *_eventDispatcher;
     PLPlayer *_plplayer;
     bool _started;
     bool _muted;
@@ -30,10 +37,11 @@ static NSString *status[] = {
 };
 
 
-- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
+- (instancetype)initWithManager:(RCTPlayerManager *)manager bridge:(RCTBridge *)bridge
 {
     if ((self = [super init])) {
-        _eventDispatcher = eventDispatcher;
+        self.manager = manager;
+        self.bridge = bridge;
         _started = YES;
         _muted = NO;
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
@@ -52,6 +60,8 @@ static NSString *status[] = {
     
     // 更改需要修改的 option 属性键所对应的值
     [option setOptionValue:@15 forKey:PLPlayerOptionKeyTimeoutIntervalForMediaPackets];
+    [option setOptionValue:@2000 forKey:@"PLPlayerOptionKeyMaxL1BufferDuration"];
+    [option setOptionValue:@1000 forKey:@"PLPlayerOptionKeyMaxL2BufferDuration"];
     
     if(_plplayer){
         [_plplayer stop]; //TODO View 被卸载时 也要调用
@@ -119,18 +129,23 @@ static NSString *status[] = {
     //TODO - send event
     switch (state) {
         case PLPlayerStatusCaching:
+            self.onLoading(@{});
             //[_eventDispatcher sendInputEventWithName:@"onLoading" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusPlaying:
+            self.onPlaying(@{});
             //[_eventDispatcher sendInputEventWithName:@"onPlaying" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusPaused:
+            self.onPaused(@{});
             //[_eventDispatcher sendInputEventWithName:@"onPaused" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusStopped:
+            self.onShutdown(@{});
             //[_eventDispatcher sendInputEventWithName:@"onShutdown" body:@{@"target": self.reactTag}];
             break;
         case PLPlayerStatusError:
+            self.onError2(@{});
             //[_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
             break;
         default:
@@ -151,7 +166,8 @@ static NSString *status[] = {
             [_plplayer play];
         });
     }else {
-        [_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
+        self.onError2(@{});
+        //[_eventDispatcher sendInputEventWithName:@"onError" body:@{@"target": self.reactTag , @"errorCode": [NSNumber numberWithUnsignedInt:0]}];
         [UIApplication sharedApplication].idleTimerDisabled = NO;
         NSLog(@"%@", error);
     }

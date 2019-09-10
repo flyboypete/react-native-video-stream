@@ -7,17 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <React/RCTView.h>
-#import "PLPlayer.h"
+#import <React/RCTComponent.h>
+#import <React/RCTBridge.h>
 
-@class RCTEventDispatcher;
+@class RCTPlayerManager;
 
-@interface RCTPlayer : UIView<PLPlayerDelegate>
+@interface RCTPlayer : UIView
 
 @property (nonatomic, assign) int reconnectCount;
 
+@property (nonatomic, copy) RCTBubblingEventBlock onLoading;
+@property (nonatomic, copy) RCTBubblingEventBlock onPlaying;
+@property (nonatomic, copy) RCTBubblingEventBlock onPaused;
+@property (nonatomic, copy) RCTBubblingEventBlock onShutdown;
+@property (nonatomic, copy) RCTBubblingEventBlock onError2;
 
-- (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher NS_DESIGNATED_INITIALIZER;
+
+- (id) initWithManager: (RCTPlayerManager*) manager bridge:(RCTBridge *) bridge;
 
 
 @end
